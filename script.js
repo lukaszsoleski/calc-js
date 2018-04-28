@@ -7,24 +7,81 @@ document.getElementById('=').addEventListener('click',function(){calculate();});
 document.getElementById('<').addEventListener('click',function(){undo();});        
 document.getElementById('C').addEventListener('click',function(){clean();});   
 
-document.addEventListener('keyup',function(e){
+document.addEventListener('keydown',function(e){
     e.preventDefault();
-    
-    
-    if ((e.keyCode >= 48 && e.keyCode <=57) || (e.keyCode >= 96 && e.keyCode <= 105))
-       {
-        let t =String.fromCharCode(e.keyCode);
-         document.getElementById(t).click();     
+
+    let key = e.keyCode || e.which;
+    if(e.shiftKey != true){
+       switch(true){
+           case (key >= 48 && key <=57):{//0-9 keycode and Unicode chars are the same. 
+           let t =String.fromCharCode(key);
+            document.getElementById(t).click();    
+            break;
+            }
+           case (key === 189 || key == 109): // dash || substract
+           {
+               document.getElementById("-").click();
+               break;
+           }
+           case (key === 107): // add
+           {
+               document.getElementById("+").click();
+               break;
+           }
+           case (key === 106): // multiply 
+           {
+               document.getElementById("*").click();
+               break;
+           }
+           case (key === 191 || key === 111): // division 
+           {
+               document.getElementById("/").click();
+               break;
+           }
+           case (key === 190 || key === 188) :{// dot || comma 
+               document.getElementById(".").click();
+               break;
+           }
+
+           case (key === 8):{ // backspace
+                document.getElementById("<").click();
+                break;
+           }
+           case (key === 13 || key === 187): // enter || equal sign
+           {
+                document.getElementById("=").click(); 
+                break;
+           }
+           case (key === 46):{
+               document.getElementById("C").click(); // delete
+               break;
+           }
+
+           default: {
+               console.log('Unsuported Key');
+               break;
+           }
+
        }
+
+    }else { // shift was pressed
+        if (key == 187){
+            document.getElementById("+").click(); // plus sign above the equation character
+        }
+        if (key === 56){
+            document.getElementById("*").click(); // multiplication sign above the '8' character
+        }
+    }
 
     });
 }
+
 
 function insert(num){
    let expression = document.getElementById("output-form").getAttribute("value");
    expression += num;
    document.getElementById("output-form").setAttribute("value",expression);
-   console.log("insert");
+ 
 }
 function calculate(){
     let expression = document.getElementById("output-form").getAttribute("value");
